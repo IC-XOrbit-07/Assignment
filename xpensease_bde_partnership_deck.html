@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Xpensease — BD Partnership Screening Report</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f5f5f0; color: #1a1a1a; font-size: 14px; line-height: 1.6; }
+  .container { max-width: 960px; margin: 0 auto; padding: 32px 24px; }
+
+  /* HEADER */
+  .header { background: #0f1f3d; color: #fff; border-radius: 12px; padding: 32px 36px; margin-bottom: 28px; }
+  .header h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; }
+  .header p { color: #8fafd4; font-size: 13px; }
+  .header .meta { display: flex; gap: 24px; margin-top: 16px; flex-wrap: wrap; }
+  .header .meta-item { background: rgba(255,255,255,0.08); border-radius: 8px; padding: 10px 18px; text-align: center; }
+  .header .meta-item .num { font-size: 22px; font-weight: 700; color: #5db8f5; }
+  .header .meta-item .lbl { font-size: 11px; color: #8fafd4; margin-top: 2px; }
+
+  /* NAV TABS */
+  .tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 24px; background: #fff; border-radius: 10px; padding: 10px; border: 1px solid #e0e0d8; }
+  .tab-btn { padding: 8px 18px; border-radius: 8px; border: 1px solid #d0d0c8; background: transparent; color: #555; cursor: pointer; font-size: 13px; font-family: inherit; font-weight: 500; transition: all 0.15s; }
+  .tab-btn:hover { background: #f0f0ea; }
+  .tab-btn.active { background: #0f1f3d; color: #fff; border-color: #0f1f3d; }
+
+  /* SECTIONS */
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* COMPANY CARD */
+  .card { background: #fff; border: 1px solid #e0e0d8; border-radius: 12px; padding: 20px 24px; margin-bottom: 16px; }
+  .card-top { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 14px; }
+  .avatar { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; flex-shrink: 0; }
+  .card-title { font-size: 16px; font-weight: 700; color: #0f1f3d; }
+  .card-sub { font-size: 12px; color: #777; margin-top: 3px; }
+  .badges { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+  .badge { font-size: 11px; padding: 3px 10px; border-radius: 20px; font-weight: 600; }
+  .b-fintech { background: #ddeeff; color: #1155aa; }
+  .b-ai { background: #ebe8ff; color: #5533bb; }
+  .b-saas { background: #d8f5ea; color: #0a6640; }
+  .b-b2c { background: #fff0d8; color: #885500; }
+  .b-local { background: #e8f5d8; color: #3a6612; }
+  .b-payments { background: #ffe8e0; color: #aa3311; }
+  .b-wealth { background: #fff0d8; color: #885500; }
+  .b-credit { background: #d8f5ea; color: #0a6640; }
+
+  .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 20px; margin-bottom: 14px; }
+  .info-item label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: #aaa; display: block; margin-bottom: 2px; }
+  .info-item p { font-size: 13px; color: #444; }
+  .info-item a { font-size: 12px; color: #1a6fcc; text-decoration: none; }
+  .info-item a:hover { text-decoration: underline; }
+
+  .priority-row { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+  .priority-label { font-size: 11px; color: #aaa; width: 50px; }
+  .priority-bar { flex: 1; height: 6px; background: #f0f0ea; border-radius: 3px; max-width: 200px; }
+  .priority-fill { height: 100%; border-radius: 3px; }
+
+  .collab-box { background: #f0f6ff; border-left: 4px solid #3a8fe8; border-radius: 0 8px 8px 0; padding: 12px 16px; margin-bottom: 12px; }
+  .collab-box .collab-title { font-size: 12px; font-weight: 700; color: #0f1f3d; margin-bottom: 4px; }
+  .collab-box p { font-size: 13px; color: #444; line-height: 1.7; }
+
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag { font-size: 11px; padding: 3px 10px; border: 1px solid #d8d8d0; border-radius: 20px; color: #666; background: #fafafa; }
+
+  /* SECTION HEADER */
+  .sec-header { margin-bottom: 20px; }
+  .sec-header h2 { font-size: 20px; font-weight: 700; color: #0f1f3d; margin-bottom: 4px; }
+  .sec-header p { font-size: 13px; color: #777; }
+
+  /* EMAIL CARDS */
+  .email-card { background: #fff; border: 1px solid #e0e0d8; border-radius: 12px; padding: 20px 24px; margin-bottom: 20px; }
+  .email-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #aaa; margin-bottom: 12px; }
+  .email-meta { display: grid; grid-template-columns: 60px 1fr; gap: 4px 10px; margin-bottom: 16px; font-size: 13px; border-bottom: 1px solid #f0f0ea; padding-bottom: 14px; }
+  .email-meta .ml { color: #aaa; font-size: 12px; }
+  .email-meta .mv { color: #444; }
+  .email-meta .ms { font-weight: 600; color: #0f1f3d; }
+  .email-body { font-size: 13px; color: #444; line-height: 1.9; white-space: pre-wrap; font-family: 'Courier New', monospace; background: #fafaf8; border-radius: 8px; padding: 16px; }
+
+  /* LINKEDIN */
+  .li-card { background: #fff; border: 1px solid #e0e0d8; border-radius: 12px; padding: 18px 22px; margin-bottom: 14px; }
+  .li-card h3 { font-size: 13px; font-weight: 700; color: #0f1f3d; margin-bottom: 8px; }
+  .li-body { background: #f0f8f0; border-left: 4px solid #1d9e75; border-radius: 0 8px 8px 0; padding: 12px 16px; font-size: 13px; color: #333; line-height: 1.8; white-space: pre-wrap; }
+  .tip-box { background: #fff8e8; border: 1px solid #f5d88a; border-radius: 10px; padding: 14px 18px; margin-top: 16px; font-size: 13px; color: #665500; line-height: 1.7; }
+  .tip-box strong { color: #443300; }
+
+  /* STRATEGY */
+  .strategy-card { background: #fff; border: 1px solid #e0e0d8; border-radius: 12px; padding: 20px 24px; margin-bottom: 16px; }
+  .strategy-card h3 { font-size: 15px; font-weight: 700; color: #0f1f3d; margin-bottom: 16px; }
+  .step { display: flex; gap: 14px; padding: 12px 0; border-bottom: 1px solid #f0f0ea; }
+  .step:last-child { border-bottom: none; }
+  .step-num { width: 28px; height: 28px; border-radius: 50%; background: #0f1f3d; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+  .step-content h4 { font-size: 13px; font-weight: 700; color: #0f1f3d; margin-bottom: 4px; }
+  .step-content p { font-size: 13px; color: #555; line-height: 1.6; }
+  .matrix { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 8px; }
+  .matrix-box { border-radius: 10px; padding: 14px 16px; }
+  .m-green { background: #e8f8ef; border-left: 4px solid #1d9e75; }
+  .m-blue { background: #e8f2ff; border-left: 4px solid #3a8fe8; }
+  .m-amber { background: #fff5e0; border-left: 4px solid #e8a020; }
+  .m-purple { background: #f0eeff; border-left: 4px solid #7f77dd; }
+  .matrix-box h4 { font-size: 12px; font-weight: 700; margin-bottom: 6px; }
+  .m-green h4 { color: #0a6640; }
+  .m-blue h4 { color: #0c447c; }
+  .m-amber h4 { color: #885500; }
+  .m-purple h4 { color: #3c3489; }
+  .matrix-box p { font-size: 12px; color: #555; line-height: 1.7; }
+
+  /* PRESENTATION GUIDE */
+  .present-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .present-card { background: #fff; border: 1px solid #e0e0d8; border-radius: 12px; padding: 18px 20px; }
+  .present-card h3 { font-size: 14px; font-weight: 700; color: #0f1f3d; margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid #f0f0ea; }
+  .present-card ul { list-style: none; padding: 0; }
+  .present-card li { font-size: 12px; color: #555; padding: 4px 0; line-height: 1.5; }
+  .present-card li::before { content: "→ "; color: #aaa; }
+
+  /* FOOTER */
+  .footer { margin-top: 36px; text-align: center; font-size: 12px; color: #aaa; padding: 20px; background: #fff; border-radius: 12px; border: 1px solid #e0e0d8; }
+  .footer strong { color: #0f1f3d; }
+
+  @media (max-width: 600px) {
+    .info-grid, .matrix, .present-grid { grid-template-columns: 1fr; }
+    .header .meta { flex-direction: column; gap: 10px; }
+    .tabs { gap: 4px; }
+    .tab-btn { font-size: 12px; padding: 6px 12px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <h1>Xpensease — BD Partnership Screening</h1>
+    <p>Business Development Intern Assignment &nbsp;·&nbsp; YVP Financial Technologies Pvt. Ltd. &nbsp;·&nbsp; Jaipur, India</p>
+    <div class="meta">
+      <div class="meta-item"><div class="num">10</div><div class="lbl">Target Companies</div></div>
+      <div class="meta-item"><div class="num">5</div><div class="lbl">Sectors Covered</div></div>
+      <div class="meta-item"><div class="num">3</div><div class="lbl">Email Templates</div></div>
+      <div class="meta-item"><div class="num">4</div><div class="lbl">LinkedIn Messages</div></div>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('companies', this)">🏢 Target Companies</button>
+    <button class="tab-btn" onclick="switchTab('outreach', this)">📧 Email Templates</button>
+    <button class="tab-btn" onclick="switchTab('linkedin', this)">💼 LinkedIn Messages</button>
+    <button class="tab-btn" onclick="switchTab('strategy', this)">🎯 Follow-up Strategy</button>
+    <button class="tab-btn" onclick="switchTab('present', this)">📊 Presentation Guide</button>
+  </div>
+
+  <!-- ===================== COMPANIES ===================== -->
+  <div id="companies" class="section active">
+    <div class="sec-header">
+      <h2>10 Target Partnership Companies</h2>
+      <p>Researched and prioritized based on product fit, user overlap, and realistic collaboration potential.</p>
+    </div>
+
+    <!-- 1. Razorpay -->
+    <div class="card">
+      <div class="card-top">
+        <div class="avatar" style="background:#ddeeff; color:#1155aa;">RZ</div>
+        <div>
+          <div class="card-title">Razorpay</div>
+          <div class="card-sub">Full-stack financial services — payments, payroll, banking APIs</div>
+          <div class="badges">
+            <span class="badge b-fintech">Fintech</span>
+            <span class="badge b-payments">Payments</span>
+          </div>
+        </div>
+      </div>
+      <div class="priority-row">
+        <span class="priority-label">Priority</span>
+        <div class="priority-bar"><div class="priority-fill" style="width:95%; background:#3a8fe8;"></div></div>
+        <span style="font-size:12px; color:#555; font-weight:600;">Very High</span>
+      </div>
+      <div class="info-grid">
+        <div class="info-item"><label>Contact Person</label><p>Harshil Mathur — CEO & Co-founder</p></div>
+        <div class="info-item"><label>Website</label><a href="https://razorpay.com" target="_blank">razorpay.com ↗</a></div>
+        <div class="info-item"><label>LinkedIn</label><a href="https://linkedin.com/company/razorpay" target="_blank">linkedin.com/company/razorpay ↗</a></div>
+        <div class="info-item"><label>Best Contact Route</label><p>partnerships@razorpay.com</p></div>
+      </div>
+      <div class="collab-box">
+        <div class="collab-title">Collaboration Opportunity</div>
+        <p>Xpensease reads UPI/bank SMS and tracks spend. Razorpay powers millions of UPI transactions daily. A payment link API integration would let Xpensease users settle Group Splits with one tap — no manual app-switching. Razorpay gains deeper stickiness in a daily-use finance audience. Pitch as a scoped 2-week pilot.</p>
+      </div>
+      <div class="tags">
+        <span class="tag">UPI Settlement</span><span class="tag">Group Split</span><span class="tag">API Integration</span><span class="tag">Pilot Partnership</span>
+      </div>
+    </div>
+
+    <!-- 2. Fi Money -->
+    <div class="card">
+      <div class="card-top">
+        <div class="avatar" style="background:#ebe8ff; color:#5533bb;">FI</div>
+        <div>
+          <div class="card-title">Fi Money</div>
+          <div class="card-sub">Neo-banking app for millennials & Gen Z — savings, spends, analytics</div>
+          <div class="badges">
+            <span class="badge b-fintech">Fintech</span>
+            <span class="badge b-b2c">B2C</span>
+          </div>
+        </div>
+      </div>
+      <div class="priority-row">
+        <span class="priority-label">Priority</span>
+        <div class="priority-bar"><div class="priority-fill" style="width:88%; background:#7f77dd;"></div></div>
+        <span style="font-size:12px; color:#555; font-weight:600;">High</span>
+      </div>
+      <div class="info-grid">
+        <div class="info-item"><label>Contact Person</label><p>Sumit Gwalani — Co-founder</p></div>
+        <div class="info-item"><label>Website</label><a href="https://fi.money" target="_blank">fi.money ↗</a></div>
+        <div class="info-item"><label>LinkedIn</label><a href="https://linkedin.com/company/fi-money" target="_blank">linkedin.com/company/fi-money ↗</a></div>
+        <div class="info-item"><label>Best Contact Route</label><p>Growth / partnerships team on LinkedIn</p></div>
+      </div>
+      <div class="collab-box">
+        <div class="collab-title">Collaboration Opportunity</div>
+        <p>Fi Money users track spending inside a closed ecosystem. Xpensease's SMS-based tracker works across all banks — making it perfect for Fi users splitting expenses with non-Fi friends. A cross-promotion or referral program targeting college students and young professionals in Tier-2 cities could expand both apps' installs simultaneously.</p>
+      </div>
+      <div class="tags">
+        <span class="tag">Cross-promotion</span><span class="tag">Referral Program</span><span class="tag">Gen Z Segment</span>
+      </div>
+    </div>
+
+    <!-- 3. Slice -->
+    <div class="card">
+      <div class="card-top">
+        <div class="avatar" style="background:#d8f5ea; color:#0a6640;">SL</div>
+        <div>
+          <div class="card-title">Slice (now merged with NESL)</div>
+          <div class="card-sub">BNPL & credit card for students and young adults</div>
+          <div class="badges">
+            <span class="badge b-fintech">Fintech</span>
+            <span class="badge b-credit">Credit</span>
+          </div>
+        </div>
+      </div>
+      <div class="priority-row">
+        <span class="priority-label">Priority</span>
+        <div class="priority-bar"><div class="priority-fill" style="width:75%; background:#1d9e75;"></div></div>
+        <span style="font-size:12px; color:#555; font-weight:600;">High</span>
+      </div>
+      <div class="info-grid">
+        <div class="info-item"><label>Contact Person</label><p>Rajan Bajaj — Founder & CEO</p></div>
+        <div class="info-item"><label>Website</label><a href="https://sliceit.com" target="_blank">sliceit.com ↗</a></div>
+        <div class="info-item"><label>LinkedIn</label><a href="https://linkedin.com/company/sliceit" target="_blank">linkedin.com/company/sliceit ↗</a></div>
+        <div class="info-item"><label>Best Contact Route</label><p>BD team email or LinkedIn DM</p></div>
+      </div>
+      <div class="collab-box">
+        <div class="collab-title">Collaboration Opportunity</div>
+        <p>Slice users carry credit and split expenses constantly. Xpensease's Single Split and PayAlert features solve exactly the pain point — "who owes me for last month's trip?" A bundled feature placement or co-branded campus campaign targeting college hostels would give Slice a stickiness boost while bringing Xpensease its core demographic.</p>
+      </div>
+      <div class="tags">
+        <span class="tag">Campus Outreach</span><span class="tag">Credit Card Users</span><span class="tag">Split Feature</span>
+      </div>
+    </div>
+
+    <!-- 4. NoBroker -->
+    <div class="card">
+      <div class="card-top">
+        <div class="avatar" style="background:#ddeeff; color:#1155aa;">NB</div>
+        <div>
+          <div class="card-title">NoBroker</div>
+          <div class="card-sub">Zero-brokerage rental platform — 10M+ users, large flatmate & roommate base</div>
+          <div class="badges">
+            <span class="badge b-local">PropTech</span>
+            <span class="badge b-b2c">B2C</span>
+          </div>
+        </div>
+      </div>
+      <div class="priority-row">
+        <span class="priority-label">Priority</span>
+        <div class="priority-bar"><div class="priority-fill" style="width:92%; background:#3a8fe8;"></div></div>
+        <span style="font-size:12px; color:#555; font-weight:600;">Very High</span>
+      </div>
+      <div class="info-grid">
+        <div class="info-item"><label>Contact Person</label><p>Akhil Gupta — Co-founder & CTO</p></div>
+        <div class="info-item"><label>Website</label><a href="https://nobroker.in" target="_blank">nobroker.in ↗</a></div>
+        <div class="info-item"><label>LinkedIn</label><a href="https://linkedin.com/company/nobroker" target="_blank">linkedin.com/company/nobroker ↗</a></div>
+        <div class="info-item"><label>Best Contact Route</label><p>partnerships@nobroker.in or LinkedIn DM</p></div>
+      </div>
+      <div class="collab-box">
+        <div class="collab-title">Collaboration Opportunity</div>
+        <p>Xpensease's Roomies feature — monthly PDF summaries for flatmates with UPI settlements — is the perfect add-on for NoBroker users who just found a flat together. A "Manage shared expenses with Xpensease" card inside NoBroker's roommate-matching section could drive thousands of installs with near-zero CAC. This is Xpensease's highest-fit local partnership.</p>
+      </div>
+      <div class="tags">
+        <span class="tag">Roomies Feature</span><span class="tag">Zero CAC Acquisition</span><span class="tag">Flatmate Segment</span><span class="tag">In-App Placement</span>
+      </div>
+    </div>
+
+    <!-- 5. Groww -->
+    <div class="card">
+      <div class="card-top">
+        <div class="avatar" style="background:#ffe8e0; color:#aa3311;">GW</div>
+        <div>
+          <div class="card-title">Groww</div>
+          <div class="card-sub">Digital wealth & mutual fund platform for retail investors in India</div>
+          <div class="badges">
+            <span class="badge b-fintech">Fintech</span>
+            <span class="badge b-wealth">Wealth</span>
+          </div>
+        </div>
+      </div>
+      <div class="priority-row">
+        <span class="priority-label">Priority</span>
+        <div class="priority-bar"><div class="priority-fill" style="width:82%; background:#e85a30;"></div></div>
+        <span style="font-size:12px; color:#555; font-weight:600;">High</span>
+      </div>
+      <div class="info-grid">
+        <div class="info-item"><label>Contact Person</label><p>Lalit Keshre — CEO (LinkedIn)</p></div>
+        <div class="info-item"><label>Website</label><a href="https://groww.in" target="_blank">groww.in ↗</a></div>
+        <div class="info-item"><label>LinkedIn</label><a href="https://linkedin.com/company/groww-in" target="_blank">linkedin.com/company/groww-in ↗</a></div>
+        <div class="info-item"><label>Best Contact Route</label><p>partnerships@groww.in + LinkedIn</p></div>
+      </div>
+      <div class="collab-box">
+        <div class="collab-title">Collaboration Opportunity</div>
+        <p>A user who tracks every rupee with Xpensease is a high-intent investor — exactly who Groww wants. Propose a "Save what you don't spend" CTA inside Xpensease's budget summary screen that deep-links to Groww's SIP onboarding. Revenue model: affiliate/referral per signup. This creates a full financial flywheel: spend awareness → savings → investment.</p>
+      </div>
+      <div class="tags">
+        <span class="tag">Affiliate Referral</span><span class="tag">SIP Integration</span><span class="tag">Budget-to-Invest CTA</span>
+      </div>
+    </div>
+
+    <!-- 6. Jar App -->
+    <div class="card">
+      <div class="card-top">
+        <div class="avatar" style="background:#fff0d8; color:#885500;">JR</div>
+        <div>
+          <div class="card-title">Jar App</div>
+          <div class="card-sub">Micro-savings & automated round-up app for young earners</div>
+          <div class="badges">
+            <span class="badge b-ai">AI</span>
+            <span class="badge b-fintech">Savings</span>
+          </div>
+        </div>
+      </div>
+      <div class="priority-row">
+        <span class="priority-label">Priority</span>
+        <div class="priority-bar"><div class="priority-fill" style="width:78%; background:#e8a020;"></div></div>
+        <span style="font-size:12px; color:#555; font-weight:600;">High</span>
+      </div>
+      <div class="info-grid">
+        <div class="info-item"><label>Contact Person</label><p>Nishchay Ag — Co-founder</p></div>
+        <div class="info-item"><label>Website</label><a href="https://myjar.app" target="_blank">myjar.app ↗</a></div>
+        <div class="info-item"><label>LinkedIn</label><a href="https://linkedin.com/company/jar-app" target="_blank">linkedin.com/company/jar-app ↗</a></div>
+        <div class="info-item"><label>Best Contact Route</label><p>hello@myjar.app + LinkedIn</p></div>
+      </div>
+      <div class="collab-box">
+        <div class="collab-title">Collaboration Opportunity</div>
+        <p>Jar auto-saves spare change from every transaction. Xpensease tracks every transaction. These two products create a perfect "spend → save" loop for the same demographic. Propose a mutual deep-link integration: Xpensease flags overspending → triggers a Jar savings nudge. A 2-week experiment pitched to both growth teams — zero engineering lift required.</p>
+      </div>
+      <div class="tags">
+        <span class="tag">Spend-to-Save Loop</span><span class="tag">Deep-Link Integration</span><span class="tag">Push Notification</span>
+      </div>
+    </div>
+
+    <!-- 7. Prysm -->
+    <div class="card">
+      <div class="card-top">
+        <div class="avatar" style="background:#ebe8ff; color:#5533bb;">PY</div>
+        <div>
+          <div class="card-title">Prysm — Existing Partner</div>
+          <div class="card-sub">AI-powered stock & portfolio analytics — already integrated with Xpensease</div>
+          <div class="badges">
+            <span class="badge b-ai">AI</span>
+            <span class="badge b-fintech">Fintech</span>
+          </div>
+        </div>
+      </div>
+      <div class="priority-row">
+        <span class="priority-label">Priority</span>
+        <div class="priority-bar"><div class="priority-fill" style="width:80%; background:#7f77dd;"></div></div>
+        <span style="font-size:12px; color:#555; font-weight:600;">Deepen Relationship</span>
+      </div>
+      <div class="info-grid">
+        <div class="info-item"><label>Status</label><p>Active Partner — expand the deal</p></div>
+        <div class="info-item"><label>Website</label><a href="https://prysm.ai" target="_blank">prysm.ai ↗</a></div>
+        <div class="info-item"><label>Opportunity Type</label><p>Joint content, referral expansion, co-campaign</p></div>
+        <div class="info-item"><label>Action</label><p>Schedule quarterly partnership review</p></div>
+      </div>
+      <div class="collab-box">
+        <div class="collab-title">Collaboration Opportunity</div>
+        <p>Don't just offer XPEN30 promo codes — go deeper. Propose a joint content series: "Track what you spend, grow what you save." Prysm handles the investment side; Xpensease handles the spending side. Together they cover the full financial loop. Pitch a joint Instagram/LinkedIn campaign and cross-newsletter placement targeting personal finance audiences.</p>
+      </div>
+      <div class="tags">
+        <span class="tag">Content Partnership</span><span class="tag">Joint Campaign</span><span class="tag">Newsletter Swap</span>
+      </div>
+    </div>
+
+    <!-- 8. Zoho Expense -->
+    <div class="card">
+      <div class="card-top">
+        <div class="avatar" style="background:#d8f5ea; color:#0a6640;">ZH</div>
+        <div>
+          <div class="card-title">Zoho Expense / Zoho Books</div>
+          <div class="card-sub">SMB accounting, invoicing & expense management suite — 80M+ users globally</div>
+          <div class="badges">
+            <span class="badge b-saas">SaaS</span>
+            <span class="badge b-fintech">Finance</span>
+          </div>
+        </div>
+      </div>
+      <div class="priority-row">
+        <span class="priority-label">Priority</span>
+        <div class="priority-bar"><div class="priority-fill" style="width:60%; background:#1d9e75;"></div></div>
+        <span style="font-size:12px; color:#555; font-weight:600;">Medium</span>
+      </div>
+      <div class="info-grid">
+        <div class="info-item"><label>Contact Person</label><p>Zoho Partner Program team</p></div>
+        <div class="info-item"><label>Website</label><a href="https://zoho.com/expense" target="_blank">zoho.com/expense ↗</a></div>
+        <div class="info-item"><label>LinkedIn</label><a href="https://linkedin.com/company/zoho" target="_blank">linkedin.com/company/zoho ↗</a></div>
+        <div class="info-item"><label>Best Contact Route</label><p>partners.zoho.com official portal</p></div>
+      </div>
+      <div class="collab-box">
+        <div class="collab-title">Collaboration Opportunity</div>
+        <p>Zoho Expense targets businesses; Xpensease targets individuals. Clear white-space: freelancers and solopreneurs who outgrow personal finance apps but aren't ready for full Zoho Expense. Pitch Xpensease as a "Zoho-lite personal companion" through Zoho's massive reseller network in India. Long sales cycle but massive reach if accepted into the partner ecosystem.</p>
+      </div>
+      <div class="tags">
+        <span class="tag">Partner Program</span><span class="tag">Freelancer Segment</span><span class="tag">Reseller Referral</span>
+      </div>
+    </div>
+
+    <!-- 9. OYO -->
+    <div class="card">
+      <div class="card-top">
+        <div class="avatar" style="background:#fff0d8; color:#885500;">OY</div>
+        <div>
+          <div class="card-title">OYO / OYO Townhouse</div>
+          <div class="card-sub">Budget hospitality — hotels, hostels, long-stay for young travelers & students</div>
+          <div class="badges">
+            <span class="badge b-b2c">B2C</span>
+            <span class="badge b-local">Hospitality</span>
+          </div>
+        </div>
+      </div>
+      <div class="priority-row">
+        <span class="priority-label">Priority</span>
+        <div class="priority-bar"><div class="priority-fill" style="width:65%; background:#e8a020;"></div></div>
+        <span style="font-size:12px; color:#555; font-weight:600;">Medium</span>
+      </div>
+      <div class="info-grid">
+        <div class="info-item"><label>Contact Person</label><p>OYO Partnerships / Growth Team</p></div>
+        <div class="info-item"><label>Website</label><a href="https://oyorooms.com" target="_blank">oyorooms.com ↗</a></div>
+        <div class="info-item"><label>LinkedIn</label><a href="https://linkedin.com/company/oyo-rooms" target="_blank">linkedin.com/company/oyo-rooms ↗</a></div>
+        <div class="info-item"><label>Best Contact Route</label><p>Corporate partnerships portal on their website</p></div>
+      </div>
+      <div class="collab-box">
+        <div class="collab-title">Collaboration Opportunity</div>
+        <p>Group travel is one of Xpensease's strongest use cases. OYO Townhouse targets the 18–30 demographic — college friends booking group stays. A "Split your OYO bill with Xpensease" in-app prompt after checkout could drive organic downloads. This is a clean user acquisition play, not just a partnership on paper.</p>
+      </div>
+      <div class="tags">
+        <span class="tag">Group Travel</span><span class="tag">In-App Placement</span><span class="tag">User Acquisition</span>
+      </div>
+    </div>
+
+    <!-- 10. Splitwise (competitive) -->
+    <div class="card">
+      <div class="card-top">
+        <div class="avatar" style="background:#e8f5d8; color:#3a6612;">SW</div>
+        <div>
+          <div class="card-title">Splitwise — Competitive Benchmark</div>
+          <div class="card-sub">Global expense splitting app — what Xpensease competes with and positions against</div>
+          <div class="badges">
+            <span class="badge b-b2c">B2C</span>
+            <span class="badge b-saas">App</span>
+          </div>
+        </div>
+      </div>
+      <div class="priority-row">
+        <span class="priority-label">Priority</span>
+        <div class="priority-bar"><div class="priority-fill" style="width:50%; background:#639922;"></div></div>
+        <span style="font-size:12px; color:#555; font-weight:600;">Strategic Positioning</span>
+      </div>
+      <div class="info-grid">
+        <div class="info-item"><label>Strategy Type</label><p>Competitive intelligence + differentiation</p></div>
+        <div class="info-item"><label>Website</label><a href="https://splitwise.com" target="_blank">splitwise.com ↗</a></div>
+        <div class="info-item"><label>Key Angle</label><p>India-first UPI settlements vs Splitwise's USD focus</p></div>
+        <div class="info-item"><label>Action</label><p>Use this narrative in every partnership pitch</p></div>
+      </div>
+      <div class="collab-box">
+        <div class="collab-title">Strategic Positioning Opportunity</div>
+        <p>Splitwise doesn't support SMS-based auto-tracking or UPI settlement natively — both are Xpensease's core strengths. Use this as a positioning benchmark in all pitches: "Splitwise built for the West; Xpensease built for how India actually pays." This narrative sharpens every conversation with Indian fintech partners and makes Xpensease's differentiation instantly clear.</p>
+      </div>
+      <div class="tags">
+        <span class="tag">Competitive Moat</span><span class="tag">India-First Positioning</span><span class="tag">UPI Advantage</span>
+      </div>
+    </div>
+
+  </div>
+  <!-- /COMPANIES -->
+
+  <!-- ===================== OUTREACH ===================== -->
+  <div id="outreach" class="section">
+    <div class="sec-header">
+      <h2>Cold Outreach Email Templates</h2>
+      <p>Personalized for high reply rates — not copy-paste generic. Replace [brackets] before sending.</p>
+    </div>
+
+    <div class="email-card">
+      <div class="email-label">Template 1 — NoBroker (Highest Feature Fit)</div>
+      <div class="email-meta">
+        <span class="ml">To</span><span class="mv">partnerships@nobroker.in / Akhil Gupta on LinkedIn</span>
+        <span class="ml">Subject</span><span class="ms">A quick idea — Xpensease + NoBroker for flatmates</span>
+      </div>
+      <div class="email-body">Hi [Name],
+
+I'm [Your Name] from Xpensease — a smart expense tracking app built for how India pays (UPI, SMS-based, split-friendly).
+
+I noticed that NoBroker does a brilliant job connecting flatmates, but once they move in together, managing shared bills, rent, and grocery splits becomes a whole new problem.
+
+That's exactly where Xpensease steps in — we have a "Roomies" feature that generates monthly PDF expense summaries for shared households, with UPI settlement built in.
+
+I'd love to explore a simple in-app placement inside NoBroker's roommate section — something like "Track shared expenses with Xpensease" — no heavy integration required.
+
+Happy to send across a 3-slide brief if this is something worth a 15-minute call?
+
+Best,
+[Your Name]
+Xpensease | xpensease@gmail.com | xpensease.com</div>
+    </div>
+
+    <div class="email-card">
+      <div class="email-label">Template 2 — Groww / Scripbox (Affiliate Angle)</div>
+      <div class="email-meta">
+        <span class="ml">To</span><span class="mv">partnerships@groww.in</span>
+        <span class="ml">Subject</span><span class="ms">Xpensease x Groww — a spend-to-invest loop worth exploring</span>
+      </div>
+      <div class="email-body">Hi [Name],
+
+Quick context: Xpensease is an expense tracking app with 1000+ active users who monitor every rupee they spend — your ideal early investor profile.
+
+Right now, when a user finishes reviewing their monthly budget summary, there's no natural next step pointing them toward investments. That's a gap both of us can close.
+
+Our proposal is straightforward: a "Save what's left" CTA inside the Xpensease budget dashboard, deep-linking to Groww's SIP onboarding. Revenue model: we're open to a referral/affiliate arrangement.
+
+This is a zero-engineering ask from your side — just a tracked link and a banner placement, and we both grow.
+
+Would love to connect with your growth team for a quick sync. Available this week?
+
+Regards,
+[Your Name]
+Business Development, Xpensease</div>
+    </div>
+
+    <div class="email-card">
+      <div class="email-label">Template 3 — Razorpay (Technical Integration)</div>
+      <div class="email-meta">
+        <span class="ml">To</span><span class="mv">partnerships@razorpay.com</span>
+        <span class="ml">Subject</span><span class="ms">Partnership idea — Razorpay UPI settlements inside Xpensease</span>
+      </div>
+      <div class="email-body">Hi [Name],
+
+I'm reaching out from Xpensease — an SMS-based expense tracker that auto-logs UPI, bank, and card transactions for personal finance management (available on Google Play).
+
+We have a Group Split feature where users split bills and settle up via UPI. Currently we direct users to their UPI app manually — which creates drop-off. Integrating Razorpay's payment link API would make this seamless: one-tap settle, tracked and confirmed inside our app.
+
+For Razorpay, this means more payment volume from a highly engaged daily-finance audience. For us, it's a core UX upgrade.
+
+We're a lean, fast-moving team based in Jaipur — happy to run a scoped pilot in 2–3 weeks if the product fit makes sense.
+
+Would a brief intro call work?
+
+Best,
+[Your Name]
+Xpensease | YVP Financial Technologies Pvt. Ltd.</div>
+    </div>
+  </div>
+
+  <!-- ===================== LINKEDIN ===================== -->
+  <div id="linkedin" class="section">
+    <div class="sec-header">
+      <h2>LinkedIn Connection & DM Templates</h2>
+      <p>Keep connection request notes under 300 characters. Lead with a specific, genuine observation — not a pitch.</p>
+    </div>
+
+    <div class="li-card">
+      <h3>Connection Request — NoBroker (Akhil Gupta)</h3>
+      <div class="li-body">Hi Akhil, big fan of what NoBroker has built — especially the roommate-matching flow. I'm working on Xpensease, an expense-splitting app with a Roomies feature for flatmates. I think there's a natural fit here worth a quick chat. Would love to connect.</div>
+    </div>
+
+    <div class="li-card">
+      <h3>Connection Request — Groww (Lalit Keshre)</h3>
+      <div class="li-body">Hi Lalit, really respect how Groww has democratized investing for first-time investors. I'm from Xpensease — a daily expense tracker whose users are exactly the "ready to invest but don't know how much to save" crowd. Have a partnership idea that could benefit both of us. Would love to connect.</div>
+    </div>
+
+    <div class="li-card">
+      <h3>Follow-up DM — After Connection Accepted (Razorpay)</h3>
+      <div class="li-body">Thanks for connecting! As mentioned, Xpensease is a UPI + SMS-based expense tracker on Google Play. We're exploring a settlement integration using Razorpay's payment link API within our Group Split feature — could save our users a lot of friction. Would a 15-min intro call this week work for your team?</div>
+    </div>
+
+    <div class="li-card">
+      <h3>Cold InMail — Jar App Growth Team</h3>
+      <div class="li-body">Hi [Name], I'm building partnerships for Xpensease — a daily expense tracker that reads UPI + bank SMS and helps users manage splits, budgets, and cash flow. Jar and Xpensease serve the same user at different moments: we track their spends, you help them save the surplus. A mutual deep-link or shared notification strategy could drive installs for both — low effort, high intent. Happy to share a 1-pager. Worth a look?</div>
+    </div>
+
+    <div class="tip-box">
+      <strong>Engagement Tip Before DMing:</strong> Comment thoughtfully on 2–3 of the decision-maker's recent LinkedIn posts first. This warms up the connection before you pitch, increases reply rates by ~3x vs cold DMs, and makes your message feel less transactional. Pick posts where you genuinely have something to add — not "Great post!" comments.
+    </div>
+  </div>
+
+  <!-- ===================== STRATEGY ===================== -->
+  <div id="strategy" class="section">
+    <div class="sec-header">
+      <h2>Follow-up & Outreach Strategy</h2>
+      <p>A systematic approach is what separates a BD intern from a BD professional. This is your playbook.</p>
+    </div>
+
+    <div class="strategy-card">
+      <h3>7-Day Outreach Sequence</h3>
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <h4>Day 0 — Research & Warm Up</h4>
+          <p>Follow the company on LinkedIn/Twitter. Like or comment on a relevant post genuinely. This seeds name recognition before first contact and makes you memorable when your message lands.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <h4>Day 1 — Send Email + LinkedIn Request Simultaneously</h4>
+          <p>Send the cold email and LinkedIn connection request on the same day. The doubled touchpoint signals genuine intent without being spammy. Different channels, same message — it shows you're serious.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <h4>Day 4 — Soft Follow-Up Email</h4>
+          <p>Reply to your own email thread (don't start a new one — same subject line). Just 2 sentences: "Bumping this up in case it got buried. Happy to send a 1-pager if useful." No desperation, no pressure.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <h4>Day 7 — LinkedIn DM (if connected)</h4>
+          <p>If the connection was accepted, send the DM template. Reference the email casually: "Also dropped an email earlier this week — would love your team's take." If not connected, try InMail.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-content">
+          <h4>Day 14 — Final Attempt + New Value Add</h4>
+          <p>Send one last email with a fresh angle — a specific insight, a user stat, or a recently updated feature. Then move on. Persistence is professional; desperation is not. Log it and focus energy elsewhere.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="strategy-card">
+      <h3>Prioritization Matrix — Who to Approach First</h3>
+      <div class="matrix">
+        <div class="matrix-box m-green">
+          <h4>Start This Week</h4>
+          <p>NoBroker — highest feature fit, easy entry via partnerships page<br><br>Groww — affiliate model, zero engineering needed<br><br>Jar App — same demographic, fast-moving BD team</p>
+        </div>
+        <div class="matrix-box m-blue">
+          <h4>Next 2–3 Weeks</h4>
+          <p>Razorpay — needs a technical brief + brief deck first<br><br>Fi Money — requires warm intro if possible<br><br>Prysm — deepen the existing relationship with a joint campaign pitch</p>
+        </div>
+        <div class="matrix-box m-amber">
+          <h4>Warm Up First</h4>
+          <p>OYO — needs a travel use-case one-pager<br><br>Slice — pitch directly to campus BD team<br><br>Zoho — apply via partner portal; longer enterprise sales cycle</p>
+        </div>
+        <div class="matrix-box m-purple">
+          <h4>Strategic Positioning</h4>
+          <p>Splitwise — use as competitive moat in every pitch deck<br><br>"Built for India, not ported from the West" — lead with this narrative whenever comparing to global players</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== PRESENTATION ===================== -->
+  <div id="present" class="section">
+    <div class="sec-header">
+      <h2>How to Present This Submission</h2>
+      <p>Format depends on where you're submitting. Pick one — or use all four for a standout package.</p>
+    </div>
+    <div class="present-grid">
+      <div class="present-card">
+        <h3>📊 Google Sheets</h3>
+        <ul>
+          <li>Tab 1: Company Pipeline (all 10 with status)</li>
+          <li>Tab 2: Outreach Tracker (sent, replied, meeting booked)</li>
+          <li>Tab 3: Priority Matrix (Impact vs Effort grid)</li>
+          <li>Conditional formatting: red/yellow/green by status</li>
+          <li>Filter by Sector, Priority, and Outreach Stage</li>
+          <li>Freeze Row 1 headers, bold company names</li>
+          <li>Add dropdown for Status: Identified / Contacted / Replied / Meeting Booked</li>
+        </ul>
+      </div>
+      <div class="present-card">
+        <h3>🗂️ Notion</h3>
+        <ul>
+          <li>Database view with gallery cards per company</li>
+          <li>Properties: Sector, Priority, Status, Contact, Website</li>
+          <li>Embed outreach templates as linked sub-pages</li>
+          <li>Kanban view: Identified → Contacted → Replied → Meeting</li>
+          <li>Add a "BD Strategy" overview page at the top</li>
+          <li>Share a public Notion link in your submission email</li>
+          <li>Add company logos using Cover Image for visual polish</li>
+        </ul>
+      </div>
+      <div class="present-card">
+        <h3>📄 PDF Report</h3>
+        <ul>
+          <li>Cover page: Xpensease logo + "BD Partnership Research, 2025"</li>
+          <li>Page 2: Executive Summary (3 bullet strategic insights)</li>
+          <li>Pages 3–12: One company per page, clean layout</li>
+          <li>Page 13: Outreach templates</li>
+          <li>Page 14: Follow-up strategy + next steps</li>
+          <li>Use Canva or Notion → PDF export for clean formatting</li>
+          <li>Keep font consistent — Poppins or DM Sans works well</li>
+        </ul>
+      </div>
+      <div class="present-card">
+        <h3>📑 PowerPoint / Slides</h3>
+        <ul>
+          <li>Slide 1: Title + your name + date</li>
+          <li>Slide 2: Xpensease overview (your understanding)</li>
+          <li>Slide 3: Research methodology & sectors covered</li>
+          <li>Slides 4–13: One company per slide (name, why, how)</li>
+          <li>Slide 14: Prioritization 2×2 matrix (visual)</li>
+          <li>Slide 15: Outreach strategy + sample email</li>
+          <li>Slide 16: Your recommendations + next steps</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="tip-box" style="margin-top: 20px;">
+      <strong>Pro Tip for Impressing Recruiters:</strong> Add a personal "Intern's Perspective" box to your submission — 3–4 lines about what you found most surprising in the research, and which partnership you'd personally prioritize first and why. This shows you're thinking strategically, not just compiling data. That's the difference between a good submission and a memorable one.<br><br>
+      <strong>Bonus:</strong> Pull the actual Google Play download count and rating from the Xpensease Play Store listing and include it in your outreach emails. Concrete numbers ("4.3 stars, 1000+ downloads") make the pitch land harder than vague claims.
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <strong>Xpensease BD Partnership Screening Report</strong><br>
+    Prepared for: YVP Financial Technologies Pvt. Ltd. &nbsp;·&nbsp; Website: xpensease.com &nbsp;·&nbsp; Email: xpensease@gmail.com<br>
+    <span style="margin-top:6px; display:block;">This report is research-based and execution-focused. All company details are publicly available information.</span>
+  </div>
+
+</div>
+
+<script>
+  function switchTab(id, btn) {
+    document.querySelectorAll('.section').forEach(function(s){ s.classList.remove('active'); });
+    document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('active'); });
+    document.getElementById(id).classList.add('active');
+    btn.classList.add('active');
+  }
+</script>
+</body>
+</html>
